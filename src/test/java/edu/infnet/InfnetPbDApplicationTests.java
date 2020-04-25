@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import edu.infnet.leitor.LeitorDeCSV;
 import edu.infnet.model.Grafico;
+import edu.infnet.service.GraficoService;
 import edu.infnet.util.Conversor;
 
 @SpringBootTest
@@ -22,6 +23,9 @@ class InfnetPbDApplicationTests {
 	
 	@Autowired
 	private Conversor conversor;
+	
+	@Autowired
+	private GraficoService graficoService;
 
 	private List<Grafico> graficosLidos;
 	
@@ -42,10 +46,8 @@ class InfnetPbDApplicationTests {
 	
 	@Test
 	void deveRetornarUmaListaDeGraficos() {
-		graficosLidos = leitor.leArquivo();
+		graficosLidos = graficoService.getGrafico();
 		assertThat(graficosLidos.size()).isGreaterThan(0);
-		
-		graficosLidos.forEach(grafico -> System.out.println(grafico));
 	}
 
 }
