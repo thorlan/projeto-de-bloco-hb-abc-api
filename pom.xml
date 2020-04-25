@@ -13,8 +13,7 @@
 	<artifactId>infnet-pb-d</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>infnet-pb-d</name>
-	<description>Projeto de bloco - Engenharia de Software com Java. Bloco D</description>
-
+	<description>Api para a homebroker ABC (Projeto de bloco - Engenharia de Software com Java. Bloco D)</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

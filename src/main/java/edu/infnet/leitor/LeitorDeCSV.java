@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import edu.infnet.model.Dia;
 import edu.infnet.model.Grafico;
 import edu.infnet.util.Conversor;
 
@@ -19,14 +20,15 @@ public class LeitorDeCSV {
 	@Autowired
 	private Conversor conversor;
 
-	public List<Grafico> leArquivo() {
+	public Grafico leArquivo() {
 
 		String csvFile = "MGLU3.SA.csv";
 		String line = "";
 		String cvsSplitBy = ",";
+		Grafico grafico = new Grafico();
 
-		Grafico grafico;
-		List<Grafico> graficos = new ArrayList<>();
+		Dia dia;
+		List<Dia> dias = new ArrayList<>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 
@@ -45,16 +47,16 @@ public class LeitorDeCSV {
 					}
 				}
 
-				grafico = new Grafico();
-				grafico.setDate(conversor.stringToLocalDate(linha[0]));
-				grafico.setOpen(new BigDecimal(linha[1]));
-				grafico.setHigh(new BigDecimal(linha[2]));
-				grafico.setLow(new BigDecimal(linha[3]));
-				grafico.setClose(new BigDecimal(linha[4]));
-				grafico.setAdjClose(new BigDecimal(linha[5]));
-				grafico.setVolume(new BigDecimal(linha[6]));
+				dia = new Dia();
+				dia.setDate(conversor.stringToLocalDate(linha[0]));
+				dia.setOpen(new BigDecimal(linha[1]));
+				dia.setHigh(new BigDecimal(linha[2]));
+				dia.setLow(new BigDecimal(linha[3]));
+				dia.setClose(new BigDecimal(linha[4]));
+				dia.setAdjClose(new BigDecimal(linha[5]));
+				dia.setVolume(new BigDecimal(linha[6]));
 
-				graficos.add(grafico);
+				dias.add(dia);
 
 			}
 
@@ -62,6 +64,8 @@ public class LeitorDeCSV {
 			e.printStackTrace();
 		}
 
-		return graficos;
+		grafico.setDias(dias);
+		
+		return grafico;
 	}
 }

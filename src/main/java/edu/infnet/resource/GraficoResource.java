@@ -18,7 +18,7 @@ import edu.infnet.service.GraficoService;
 public class GraficoResource {
 
 	
-	//https://hb-abc.herokuapp.com/abc-hb/api/grafico
+	//endereço https://hb-abc.herokuapp.com/abc-hb/api/grafico
 	@Autowired
 	private GraficoService graficoService;
 	
@@ -26,7 +26,7 @@ public class GraficoResource {
 	@GetMapping("/grafico")
 	public ResponseEntity<List<Grafico>> getGrafico(){
 		
-		List<Grafico> graficos = graficoService.getGrafico();
+		List<Grafico> graficos = graficoService.getGraficos();
 		
 		return new ResponseEntity<List<Grafico>>(graficos, HttpStatus.ACCEPTED);
 	}
