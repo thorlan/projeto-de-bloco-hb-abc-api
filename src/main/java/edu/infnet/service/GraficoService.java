@@ -24,6 +24,10 @@ public class GraficoService {
 	}
 	
 	public List<Grafico> getGrafico(){
+		//TODO: REALIZAR O CALCULO MACD
+		//REALIZAR O CALCULO EMA 9,12,26
+		//MOSTRAR HISTOGRAMA DO MACD
+		
 		return this.graficos;
 	}
 }
