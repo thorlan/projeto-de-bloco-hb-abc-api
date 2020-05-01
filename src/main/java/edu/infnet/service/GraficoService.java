@@ -1,12 +1,17 @@
 package edu.infnet.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import edu.infnet.leitor.LeitorDeCSV;
 import edu.infnet.model.Dia;
@@ -18,31 +23,54 @@ public class GraficoService {
 	@Autowired
 	private LeitorDeCSV leitor;
 
+	@JsonProperty(value="grafico")
 	private Grafico grafico;
+	
+	@JsonProperty(value="ema9")
+	private Grafico ema9;
+	
+	@JsonProperty(value="ema12")
+	private Grafico ema12;
+	
+	@JsonProperty(value="ema26")
+	private Grafico ema26;
 
 	private List<Grafico> graficos;
 
+//	private double sma;
+
+//	private BigDecimal multiplicador;
+
 	@PostConstruct
 	private void leArquivo() {
+		
 		graficos = new ArrayList<>();
-		this.grafico = leitor.leArquivo();
+		
+		grafico = leitor.leArquivo();
 		graficos.add(grafico);
+
+	//	this.sma = getSMA();
+	//	this.multiplicador = getMultiplicador();
+		
+		ema9 = calculaEma(9);
+		graficos.add(ema9);
+		
+		ema12 = calculaEma(12);
+		graficos.add(ema12);
+		
+		ema26 = calculaEma(26);
+		graficos.add(ema26);
 	}
 
 	public List<Grafico> getGraficos() {
 		// TODO: REALIZAR O CALCULO MACD
 		// MOSTRAR HISTOGRAMA DO MACD
 		// calculaMACD
-
-		// REALIZAR O CALCULO EMA 9,12,26
-		calculaEma(9);
-		calculaEma(12);
-		calculaEma(26);
 		
 		return this.graficos;
 	}
 
-	private void calculaEma(int periodo) {
+	private Grafico calculaEma(int periodo) {
 
 		/**
 		 * CÁLCULO
@@ -58,6 +86,8 @@ public class GraficoService {
 		 * 
 		 * (2 / (Número de períodos + 1), portanto (2 / (5 + 1) = 33,333%
 		 * 
+		 * 
+		 *  FALTA ABAIXO!
 		 * 3. Calcule a EMA
 		 * 
 		 * Para a primeira EMA, usamos o SMA (dia anterior) em vez de EMA (dia
@@ -65,28 +95,58 @@ public class GraficoService {
 		 * 
 		 * EMA = {Fechamento - EMA (dia anterior)} x multiplicador + EMA (dia anterior)
 		 */
+		
+		List<Dia> dias = new ArrayList<>();
 
-		double sma = getSMA();
-		double multiplicador = getMultiplicador();
-		Grafico graficoEMA = getEMA();
+		Dia diaGraficoComum;
+		
+		for (int i = 0; i < grafico.getDias().size() ; i++) {
+		
+			diaGraficoComum = grafico.getDias().get(i);
+			BigDecimal close;
+			
+			if(isFirstDay(i)){
+				close = calculaEma(diaGraficoComum.getClose(), getSMA(), getMultiplicador());
+			} else {
+				close = calculaEma(diaGraficoComum.getClose(), dias.get(i-1).getClose(), getMultiplicador());
+			}
+			
+			dias.add(new Dia(diaGraficoComum.getDate(),close));
+			
+		}
 
-		graficos.add(graficoEMA);
+		Grafico graficoEMA = new Grafico();
+		graficoEMA.setDias(dias);
+		
+		return graficoEMA;
 
 	}
 
-	private Grafico getEMA() {
-		// TODO Auto-generated method stub
-		return null;
+	private boolean isFirstDay(int i) {
+		return i == 0;
 	}
 
-	private double getMultiplicador() {
-		// TODO Auto-generated method stub
-		return 0;
+	private BigDecimal calculaEma(BigDecimal close, BigDecimal emaOuSma, BigDecimal multiplicador) {
+		//EMA = {Fechamento - EMA (dia anterior)} x multiplicador + EMA (dia anterior)
+		BigDecimal ema = close.subtract(emaOuSma);
+		ema = ema.multiply(multiplicador).add(emaOuSma);
+		return ema;
 	}
 
-	private double getSMA() {
-		// TODO Auto-generated method stub
+	private BigDecimal getMultiplicador() {
+		
+		int periodos = grafico.getDias().size();
+		
+		BigDecimal divisor = new BigDecimal((periodos + 1));
+		BigDecimal denominador = new BigDecimal(2);
+		BigDecimal multiplicador = denominador.divide(divisor);
+		
+		return multiplicador;
+	}
 
-		return 0;
+	private BigDecimal getSMA() {
+		List<BigDecimal> fechamentoPorDia = grafico.getDias().stream().map(Dia::getAdjClose).collect(Collectors.toList());
+		Double average = fechamentoPorDia.stream().mapToDouble(BigDecimal::doubleValue).average().getAsDouble();
+		return new BigDecimal(average);
 	}
 }

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import edu.infnet.leitor.LeitorDeCSV;
-import edu.infnet.model.Dia;
 import edu.infnet.model.Grafico;
 import edu.infnet.service.GraficoService;
 import edu.infnet.util.Conversor;

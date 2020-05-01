@@ -26,6 +26,11 @@ public class Dia {
 	public Dia() {
 	}
 	
+	public Dia(LocalDate date, BigDecimal close) {
+		this.date = date;
+		this.close = close;
+	}
+	
 	public LocalDate getDate() {
 		return date;
 	}
