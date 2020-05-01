@@ -39,23 +39,23 @@ public class GraficoService {
 
 		grafico = leitor.leArquivo();
 
-		List<Dia> diaTeste = new ArrayList<>();
-		for (int i = 2; i <= 20 ; i+=2) {
-			diaTeste.add(new Dia(LocalDate.now(), new BigDecimal(i)));
-		}
-
-		grafico.setDias(diaTeste);
+//		List<Dia> diaTeste = new ArrayList<>();
+//		for (int i = 2; i <= 20 ; i+=2) {
+//			diaTeste.add(new Dia(LocalDate.now(), new BigDecimal(i)));
+//		}
+//		
+//		grafico.setDias(diaTeste);
 		
 		graficos.add(grafico);
 
 		ema9 = calculaEma(9);
 		graficos.add(ema9);
 
-//		ema12 = calculaEma(12);
-//		graficos.add(ema12);
-//
-//		ema26 = calculaEma(26);
-//		graficos.add(ema26);
+		ema12 = calculaEma(12);
+		graficos.add(ema12);
+
+		ema26 = calculaEma(26);
+		graficos.add(ema26);
 	}
 
 	public List<Grafico> getGraficos() {
@@ -71,8 +71,7 @@ public class GraficoService {
 		List<Dia> dias = new ArrayList<>();
 
 		Dia diaGraficoComum;
-
-		BigDecimal sma = getSMA(periodo);
+		
 		double multiplicador = getMultiplicador(periodo);
 		
 		for (int i = 0; i < grafico.getDias().size(); i++) {
@@ -81,7 +80,7 @@ public class GraficoService {
 			BigDecimal adjClose;
 
 			if (isFirstDay(i)) {
-				adjClose =  calculaEma(diaGraficoComum.getAdjClose(), sma, multiplicador);
+				adjClose =  calculaEma(diaGraficoComum.getAdjClose(), getSMA(i, i + periodo), multiplicador);
 			} else {
 				adjClose = calculaEma(diaGraficoComum.getAdjClose(), dias.get(i - 1).getAdjClose(), multiplicador);
 			}
@@ -102,8 +101,8 @@ public class GraficoService {
 	private BigDecimal calculaEma(BigDecimal close, BigDecimal emaOntemOuSma, double multiplicador) {
 		
 		System.out.println("----------");
-		System.out.println(close);
-		System.out.println(emaOntemOuSma);
+		System.out.println("tod" + close);
+		System.out.println("yest" + emaOntemOuSma);
 		
 		
 		BigDecimal bigEma = (close.subtract(emaOntemOuSma)).multiply(new BigDecimal(multiplicador)).add(emaOntemOuSma);
@@ -115,14 +114,21 @@ public class GraficoService {
 		return (2.0 / (periodo + 1.0));
 	}
 
-	private BigDecimal getSMA(int periodo) {
+	private BigDecimal getSMA(int inicio, int fim) {
 		List<BigDecimal> fechamentoPorDia = grafico.getDias().stream().map(Dia::getAdjClose)
 				.collect(Collectors.toList());
 		
-		List<BigDecimal> subList = fechamentoPorDia.subList(fechamentoPorDia.size() - periodo, fechamentoPorDia.size());
+		if (fim > fechamentoPorDia.size()) {
+			fim = fechamentoPorDia.size();
+		}
 		
+		List<BigDecimal> subList = fechamentoPorDia.subList(inicio , fim);
+		//SMA ANDA CONFORME A DATA. SMA DE UM PERIODO DE 9. DIVIDE OS 9 DIAS E TEM UM SMA!
+		//DIVIDE AGORA MAIS 9 DIAS, A PARTIR DO 2 DIA E TEM SE O SMA DO 2 DIA!
+		//DIVIDE AGORA MAIS 9 DIAS, A PARTIR DO 3 DIA E TEM SE O SMA DO 3 DIA!
+		//https://wpcalc.com/en/simple-moving-average/
 		Double average = subList.stream().mapToDouble(BigDecimal::doubleValue).average().getAsDouble();
-		System.out.println(average);
+		System.out.println("inicio :" + inicio + " fim " + fim + " avg " + average);
 		return new BigDecimal(average);
 	}
 }
