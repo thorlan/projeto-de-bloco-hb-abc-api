@@ -39,13 +39,7 @@ public class GraficoService {
 
 		grafico = leitor.leArquivo();
 
-//		List<Dia> diaTeste = new ArrayList<>();
-//		for (int i = 2; i <= 20 ; i+=2) {
-//			diaTeste.add(new Dia(LocalDate.now(), new BigDecimal(i)));
-//		}
-//		
-//		grafico.setDias(diaTeste);
-		
+		//https://br.financas.yahoo.com/quote/MGLU3.SA/chart?p=MGLU3.SA#eyJpbnRlcnZhbCI6ImRheSIsInBlcmlvZGljaXR5IjoxLCJjYW5kbGVXaWR0aCI6NC41OTY3NzQxOTM1NDgzODcsInZvbHVtZVVuZGVybGF5Ijp0cnVlLCJhZGoiOnRydWUsImNyb3NzaGFpciI6dHJ1ZSwiY2hhcnRUeXBlIjoibGluZSIsImV4dGVuZGVkIjp0cnVlLCJtYXJrZXRTZXNzaW9ucyI6eyJwcmUiOnRydWUsInBvc3QiOnRydWV9LCJhZ2dyZWdhdGlvblR5cGUiOiJvaGxjIiwiY2hhcnRTY2FsZSI6ImxpbmVhciIsInBhbmVscyI6eyJjaGFydCI6eyJwZXJjZW50IjoxLCJkaXNwbGF5IjoiTUdMVTMuU0EiLCJjaGFydE5hbWUiOiJjaGFydCIsImluZGV4IjowLCJ5QXhpcyI6eyJuYW1lIjoiY2hhcnQiLCJwb3NpdGlvbiI6bnVsbH0sInlheGlzTEhTIjpbXSwieWF4aXNSSFMiOlsiY2hhcnQiLCJ2b2wgdW5kciJdfX0sImxpbmVXaWR0aCI6Miwic3RyaXBlZEJhY2tncm91bmQiOnRydWUsImV2ZW50cyI6dHJ1ZSwiY29sb3IiOiIjMDA4MWYyIiwic3RyaXBlZEJhY2tncm91ZCI6dHJ1ZSwiZXZlbnRNYXAiOnsiY29ycG9yYXRlIjp7ImRpdnMiOnRydWUsInNwbGl0cyI6dHJ1ZX0sInNpZ0RldiI6e319LCJzeW1ib2xzIjpbeyJzeW1ib2wiOiJNR0xVMy5TQSIsInN5bWJvbE9iamVjdCI6eyJzeW1ib2wiOiJNR0xVMy5TQSIsInF1b3RlVHlwZSI6IkVRVUlUWSIsImV4Y2hhbmdlVGltZVpvbmUiOiJBbWVyaWNhL1Nhb19QYXVsbyJ9LCJwZXJpb2RpY2l0eSI6MSwiaW50ZXJ2YWwiOiJkYXkiLCJ0aW1lVW5pdCI6bnVsbCwic2V0U3BhbiI6eyJtdWx0aXBsaWVyIjoxLCJiYXNlIjoieWVhciIsInBlcmlvZGljaXR5Ijp7InBlcmlvZCI6MSwiaW50ZXJ2YWwiOiJkYXkifX19XSwiY3VzdG9tUmFuZ2UiOm51bGwsInN0dWRpZXMiOnsidm9sIHVuZHIiOnsidHlwZSI6InZvbCB1bmRyIiwiaW5wdXRzIjp7ImlkIjoidm9sIHVuZHIiLCJkaXNwbGF5Ijoidm9sIHVuZHIifSwib3V0cHV0cyI6eyJVcCBWb2x1bWUiOiIjMDBiMDYxIiwiRG93biBWb2x1bWUiOiIjRkYzMzNBIn0sInBhbmVsIjoiY2hhcnQiLCJwYXJhbWV0ZXJzIjp7IndpZHRoRmFjdG9yIjowLjQ1LCJjaGFydE5hbWUiOiJjaGFydCIsInBhbmVsTmFtZSI6ImNoYXJ0In19LCLigIxtYeKAjCAoOSxDLGVtYSwwKSI6eyJ0eXBlIjoibWEiLCJpbnB1dHMiOnsiUGVyaW9kIjoiOSIsIkZpZWxkIjoiQ2xvc2UiLCJUeXBlIjoiZXhwb25lbnRpYWwiLCJPZmZzZXQiOjAsImlkIjoi4oCMbWHigIwgKDksQyxlbWEsMCkiLCJkaXNwbGF5Ijoi4oCMbWHigIwgKDksQyxlbWEsMCkifSwib3V0cHV0cyI6eyJNQSI6IiNmZjMzM2EifSwicGFuZWwiOiJjaGFydCIsInBhcmFtZXRlcnMiOnsiY2hhcnROYW1lIjoiY2hhcnQiLCJwYW5lbE5hbWUiOiJjaGFydCJ9fSwi4oCMbWHigIwgKDEyLEMsZW1hLDApIjp7InR5cGUiOiJtYSIsImlucHV0cyI6eyJQZXJpb2QiOiIxMiIsIkZpZWxkIjoiQ2xvc2UiLCJUeXBlIjoiZXhwb25lbnRpYWwiLCJPZmZzZXQiOjAsImlkIjoi4oCMbWHigIwgKDEyLEMsZW1hLDApIiwiZGlzcGxheSI6IuKAjG1h4oCMICgxMixDLGVtYSwwKSJ9LCJvdXRwdXRzIjp7Ik1BIjoiI2ZmZGI0OCJ9LCJwYW5lbCI6ImNoYXJ0IiwicGFyYW1ldGVycyI6eyJjaGFydE5hbWUiOiJjaGFydCJ9fSwi4oCMbWHigIwgKDI2LEMsZW1hLDApIjp7InR5cGUiOiJtYSIsImlucHV0cyI6eyJQZXJpb2QiOiIyNiIsIkZpZWxkIjoiQ2xvc2UiLCJUeXBlIjoiZXhwb25lbnRpYWwiLCJPZmZzZXQiOjAsImlkIjoi4oCMbWHigIwgKDI2LEMsZW1hLDApIiwiZGlzcGxheSI6IuKAjG1h4oCMICgyNixDLGVtYSwwKSJ9LCJvdXRwdXRzIjp7Ik1BIjoiIzY0ZjFkOSJ9LCJwYW5lbCI6ImNoYXJ0IiwicGFyYW1ldGVycyI6eyJjaGFydE5hbWUiOiJjaGFydCJ9fX0sInRpbWVVbml0IjpudWxsLCJzZXRTcGFuIjp7Im11bHRpcGxpZXIiOjEsImJhc2UiOiJ5ZWFyIiwicGVyaW9kaWNpdHkiOnsicGVyaW9kIjoxLCJpbnRlcnZhbCI6ImRheSJ9fX0%3D
 		graficos.add(grafico);
 
 		ema9 = calculaEma(9);
@@ -76,13 +70,13 @@ public class GraficoService {
 		
 		for (int i = 0; i < grafico.getDias().size(); i++) {
 
-			diaGraficoComum = grafico.getDias().get(i);
+			diaGraficoComum = grafico.getDias().get(i); 
 			BigDecimal adjClose;
 
 			if (isFirstDay(i)) {
-				adjClose =  calculaEma(diaGraficoComum.getAdjClose(), getSMA(i, i + periodo), multiplicador);
+				adjClose =  calculaEma(diaGraficoComum.getClose(), getSMA(i, i + periodo), multiplicador);
 			} else {
-				adjClose = calculaEma(diaGraficoComum.getAdjClose(), dias.get(i - 1).getAdjClose(), multiplicador);
+				adjClose = calculaEma(diaGraficoComum.getClose(), dias.get(i - 1).getClose(), multiplicador);
 			}
 			dias.add(new Dia(diaGraficoComum.getDate(), adjClose));
 
@@ -100,13 +94,7 @@ public class GraficoService {
 
 	private BigDecimal calculaEma(BigDecimal close, BigDecimal emaOntemOuSma, double multiplicador) {
 		
-		System.out.println("----------");
-		System.out.println("tod" + close);
-		System.out.println("yest" + emaOntemOuSma);
-		
-		
 		BigDecimal bigEma = (close.subtract(emaOntemOuSma)).multiply(new BigDecimal(multiplicador)).add(emaOntemOuSma);
-		//System.out.println(bigEma);
 		return bigEma;
 	}
 
@@ -115,7 +103,7 @@ public class GraficoService {
 	}
 
 	private BigDecimal getSMA(int inicio, int fim) {
-		List<BigDecimal> fechamentoPorDia = grafico.getDias().stream().map(Dia::getAdjClose)
+		List<BigDecimal> fechamentoPorDia = grafico.getDias().stream().map(Dia::getClose)
 				.collect(Collectors.toList());
 		
 		if (fim > fechamentoPorDia.size()) {
@@ -128,7 +116,6 @@ public class GraficoService {
 		//DIVIDE AGORA MAIS 9 DIAS, A PARTIR DO 3 DIA E TEM SE O SMA DO 3 DIA!
 		//https://wpcalc.com/en/simple-moving-average/
 		Double average = subList.stream().mapToDouble(BigDecimal::doubleValue).average().getAsDouble();
-		System.out.println("inicio :" + inicio + " fim " + fim + " avg " + average);
 		return new BigDecimal(average);
 	}
 }
