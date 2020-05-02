@@ -67,6 +67,11 @@ public class GraficoService {
 		Dia diaGraficoComum;
 		
 		double multiplicador = getMultiplicador(periodo);
+		if ( periodo == 12) {
+			multiplicador = 0.153846154;
+		} else if ( periodo == 26) {
+			multiplicador = 0.074074074;
+		}
 		
 		for (int i = 0; i < grafico.getDias().size(); i++) {
 
@@ -74,9 +79,14 @@ public class GraficoService {
 			BigDecimal adjClose;
 
 			if (isFirstDay(i)) {
-				adjClose =  calculaEma(diaGraficoComum.getClose(), getSMA(i, i + periodo), multiplicador);
+				System.out.println("-----");
+				System.out.println("periodo  " + periodo);
+				System.out.println("close " + diaGraficoComum.getClose());
+				System.out.println("emaOntem/sma " + getSMA(i, i + periodo));
+				System.out.println("multi " + multiplicador);
+				adjClose =  calculaEma(diaGraficoComum.getClose(), getSMA(i, i + periodo), multiplicador, i);
 			} else {
-				adjClose = calculaEma(diaGraficoComum.getClose(), dias.get(i - 1).getClose(), multiplicador);
+				adjClose = calculaEma(diaGraficoComum.getClose(), dias.get(i - 1).getClose(), multiplicador, i);
 			}
 			dias.add(new Dia(diaGraficoComum.getDate(), adjClose));
 
@@ -92,9 +102,26 @@ public class GraficoService {
 		return i == 0;
 	}
 
-	private BigDecimal calculaEma(BigDecimal close, BigDecimal emaOntemOuSma, double multiplicador) {
+	private BigDecimal calculaEma(BigDecimal close, BigDecimal emaOntemOuSma, double multiplicador, int i) {
 		
+		BigDecimal subtract = close.subtract(emaOntemOuSma);
+		//−1,053400091
+		
+		BigDecimal add = new BigDecimal(multiplicador).add(emaOntemOuSma);
+		//21,644746245
+		
+		BigDecimal multiply = subtract.multiply(add);
+
 		BigDecimal bigEma = (close.subtract(emaOntemOuSma)).multiply(new BigDecimal(multiplicador)).add(emaOntemOuSma);
+		if (i ==0) {
+			System.out.println("multiplicador  " + new BigDecimal(multiplicador));
+			System.out.println("subtract " + subtract);
+			System.out.println("add " + add);
+			System.out.println("multiply " + multiply);
+			System.out.println("bigEma " + bigEma.doubleValue());
+			System.out.println("bigEma " + bigEma);
+		}
+		
 		return bigEma;
 	}
 
@@ -109,8 +136,7 @@ public class GraficoService {
 		if (fim > fechamentoPorDia.size()) {
 			fim = fechamentoPorDia.size();
 		}
-		
-		List<BigDecimal> subList = fechamentoPorDia.subList(inicio , fim);
+		List<BigDecimal> subList = fechamentoPorDia.subList(inicio , fim - 1);
 		//SMA ANDA CONFORME A DATA. SMA DE UM PERIODO DE 9. DIVIDE OS 9 DIAS E TEM UM SMA!
 		//DIVIDE AGORA MAIS 9 DIAS, A PARTIR DO 2 DIA E TEM SE O SMA DO 2 DIA!
 		//DIVIDE AGORA MAIS 9 DIAS, A PARTIR DO 3 DIA E TEM SE O SMA DO 3 DIA!
