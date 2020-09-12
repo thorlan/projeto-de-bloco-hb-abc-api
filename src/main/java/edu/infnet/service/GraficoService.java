@@ -32,6 +32,8 @@ public class GraficoService {
 	private Grafico macdLinha;
 	
 	private Grafico macdHistograma;
+	
+	private Grafico macdSinal;
 
 	private List<Grafico> graficos;
 
@@ -58,6 +60,9 @@ public class GraficoService {
 		
 		macdHistograma = calculaMacdHistograma();
 		graficos.add(macdHistograma);
+		
+		macdSinal = calculaEma(9, macdLinha.getDias());
+		graficos.add(macdSinal);
 		
 	}
 
